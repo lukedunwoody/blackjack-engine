@@ -16,17 +16,17 @@ int linear_search(int arr[], int size, int target) {
 }
 
 int main() {
-    const char cards[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    const char CARDS[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
     int cached[100];
     int current = 0;
 
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             int hand;
-            if (cards[i] > cards[j]) {
-                hand = combine_chars(cards[j], cards[i]);
+            if (CARDS[i] > CARDS[j]) {
+                hand = combine_chars(CARDS[j], CARDS[i]);
             } else {
-                hand = combine_chars(cards[i], cards[j]);
+                hand = combine_chars(CARDS[i], CARDS[j]);
             }
 
             if (current == 0) {
