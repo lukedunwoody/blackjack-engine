@@ -3,6 +3,7 @@
 
 static const uint8_t CARDS[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 static const int CARDS_LENGTH = 10;
+static const int NESTED_LIMIT = 6; // -1 for no limit
 
 int get_hand_value(uint8_t hand[], int size) {
     int value = 0;
@@ -22,7 +23,7 @@ int has_ace(uint8_t hand[], int size) {
     return 0;
 }
 
-uint64_t hit(uint8_t hand[], int size) {
+uint64_t hit(uint8_t hand[], int size, int nested) {
     uint64_t sims = 0;
 
     for (int i = 0; i < CARDS_LENGTH; i++) {
@@ -36,13 +37,12 @@ uint64_t hit(uint8_t hand[], int size) {
         }
         new_hand[size] = CARDS[i];
 
-        // If there isn't a bust or 21, keep going
+        // If there isn't a bust or 21 and we haven't reached nested limit, keep going
         int value = get_hand_value(new_hand, new_size);
-        if (value < 21 && !(value == 11 && has_ace(new_hand, new_size))) {
-            sims += hit(new_hand, new_size);
+        if (value < 21 && !(value == 11 && has_ace(new_hand, new_size)) && nested != 0) {
+            sims += hit(new_hand, new_size, nested - 1);
         }
     }
-
     return sims;
 }
 
@@ -52,7 +52,7 @@ int main() {
     for (int i = 0; i < CARDS_LENGTH; i++) {
         for (int j = 0; j < CARDS_LENGTH; j++) {
             uint8_t hand[] = {CARDS[i], CARDS[j]};
-            sims += hit(hand, 2);
+            sims += hit(hand, 2, NESTED_LIMIT);
         }
     }
 
