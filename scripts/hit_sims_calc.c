@@ -1,3 +1,5 @@
+// Calculatess the max simulations a first hit can have
+
 #include <stdint.h>
 #include <stdio.h>
 
