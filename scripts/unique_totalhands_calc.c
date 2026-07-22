@@ -7,11 +7,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define HAND_LENGTH_LIMIT 24 // Default 24, min 2, max cards in a hand 20
+
 static const uint8_t CARDS[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 static const int CARDS_LENGTH = 10;
 
 typedef struct {
-    int8_t cards[24];
+    int8_t cards[HAND_LENGTH_LIMIT];
     int size;
 } Hand;
 
@@ -106,7 +108,7 @@ CacheEntry *add_starthand_subhands(CacheEntry *cache_list_pointer, Hand hand) {
     cache_list_pointer = add_cache(cache_list_pointer, hand);
 
     int value = get_value(hand);
-    if (value != 21 && !(value == 11 && has_ace(hand))) {
+    if (value != 21 && !(value == 11 && has_ace(hand)) && hand.size != HAND_LENGTH_LIMIT) {
         for (int i = 0; i < CARDS_LENGTH; i++) {
             Hand new_hand;
             new_hand.size = hand.size + 1;
