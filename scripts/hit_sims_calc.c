@@ -5,7 +5,7 @@
 
 static const uint8_t CARDS[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 static const int CARDS_LENGTH = 10;
-static const int NESTED_LIMIT = 6; // -1 for no limit
+static const int NESTED_LIMIT = -1; // -1 for no limit
 
 int get_hand_value(uint8_t hand[], int size) {
     int value = 0;
@@ -57,7 +57,6 @@ int main() {
             sims += hit(hand, 2, NESTED_LIMIT);
         }
     }
-
     printf("Maximum simulations per hit: %llu\n", sims);
     getchar();
 }
