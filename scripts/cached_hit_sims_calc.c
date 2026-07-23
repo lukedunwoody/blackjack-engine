@@ -78,6 +78,15 @@ int has_ace(Hand hand) {
     return 0;
 }
 
+void add_cache(Hand hand, uint64_t sims, CacheTable *cache_table_ptr) {
+    CacheEntry cache_entry;
+    cache_entry.hand = hand;
+    cache_entry.sims = sims;
+
+    cache_table_ptr->list[cache_table_ptr->size] = cache_entry;
+    cache_table_ptr->size++;
+}
+
 uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr) {
     uint64_t sims = 0;
 
@@ -113,6 +122,7 @@ uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr) {
             sims += cached_hit(new_hand, cache_table_ptr);
         }
     }
+    add_cache(hand, sims, cache_table_ptr);
     return sims;
 }
 
