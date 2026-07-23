@@ -14,7 +14,7 @@ typedef struct {
 
 typedef struct {
     Hand hand;
-    uint64_t sims;
+    uint64_t unique_states;
 } CacheEntry;
 
 typedef struct {
@@ -25,7 +25,7 @@ typedef struct {
 typedef struct {
     int8_t card0;
     int8_t card1;
-    int64_t sims;
+    int64_t unique_states;
 } LutEntry;
 
 typedef struct {
@@ -89,27 +89,28 @@ int has_ace(Hand hand) {
     return 0;
 }
 
-void add_cache(Hand hand, uint64_t sims, CacheTable *cache_table_ptr) {
+void add_cache(Hand hand, uint64_t unique_states, CacheTable *cache_table_ptr) {
     CacheEntry cache_entry;
     cache_entry.hand = hand;
-    cache_entry.sims = sims;
+    cache_entry.unique_states = unique_states;
 
     cache_table_ptr->list[cache_table_ptr->size] = cache_entry;
     cache_table_ptr->size++;
 }
 
-void add_lut(Hand hand, uint64_t sims, LutTable *lut_table_ptr) {
+void add_lut(Hand hand, uint64_t unique_states, LutTable *lut_table_ptr) {
     // Assume hand size is 2
     LutEntry lut_entry;
     lut_entry.card0 = hand.cards[0];
     lut_entry.card1 = hand.cards[1];
+    lut_entry.unique_states = unique_states;
 
     lut_table_ptr->list[lut_table_ptr->size] = lut_entry;
     lut_table_ptr->size++;
 }
 
 uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr, LutTable *lut_table_ptr) {
-    uint64_t sims = 0;
+    uint64_t unique_states = 0;
 
     for (int i = 0; i < CARDS_LENGTH; i++) {
         // Append card
@@ -136,23 +137,23 @@ uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr, LutTable *lut_table_
             continue;
         }
 
-        sims++;
+        unique_states++;
 
         // Check if 21 or card limit before calling again
         if (value != 21 && !(value == 11 && has_ace(new_hand)) && new_hand.size < HAND_SIZE_LIMIT) {
-            sims += cached_hit(new_hand, cache_table_ptr, lut_table_ptr);
+            unique_states += cached_hit(new_hand, cache_table_ptr, lut_table_ptr);
         }
     }
-    add_cache(hand, sims, cache_table_ptr);
+    add_cache(hand, unique_states, cache_table_ptr);
 
     if (hand.size == 2) {
-        add_lut(hand, sims, lut_table_ptr);
+        add_lut(hand, unique_states, lut_table_ptr);
     }
-    return sims;
+    return unique_states;
 }
 
 int main() {
-    uint64_t sims = 0;
+    uint64_t unique_states = 0;
 
     CacheTable cache_table;
     cache_table.size = 0;
@@ -165,14 +166,14 @@ int main() {
         hand.cards[0] = CARDS[i];
         hand.size = 1;
 
-        sims += cached_hit(hand, &cache_table, &lut_table);
+        unique_states += cached_hit(hand, &cache_table, &lut_table);
     }
-    FILE *file = fopen("../data/luts/two_card_hit_sims.bin", "wb");
+    FILE *file = fopen("../data/luts/two_card_hit_unique_states.bin", "wb");
     if (file != NULL) {
         fwrite(&lut_table, sizeof(LutTable), 1, file);
         fclose(file);
     }
 
-    printf("Maximum simulations per hit: %llu\n", sims);
+    printf("Maximum unique states for a hit: %llu\n", unique_states);
     getchar();
 }
