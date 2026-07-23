@@ -15,8 +15,8 @@ uint64_t split(uint8_t card, int nested) {
         if (card == CARDS[i] && nested > 0) {
             sims += split(card, nested - 1);
         } else {
-            // Add together hit, dub, sur, and stand sim amounts (regular hand)
-            sims += HIT_SIM + 10 + 1 + 1;
+            // Add together hit, dub, sur, and stand sim amounts for both (regular hand)
+            sims += (HIT_SIM + 10 + 1 + 1)*2;
         }
     }
     return sims;
