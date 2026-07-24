@@ -8,41 +8,58 @@
 #include <stdlib.h>
 
 #define HAND_SIZE_LIMIT 24 // Default 24, min 2, max cards in a hand 20
+#define CARDS_LENGTH 10
 
 static const uint8_t CARDS[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-static const int CARDS_LENGTH = 10;
 
 typedef struct {
     int8_t cards[HAND_SIZE_LIMIT];
     int size;
 } Hand;
 
+typedef struct {
+    int8_t amounts[CARDS_LENGTH];
+    int size;
+} Deck;
+
 typedef struct CacheEntry {
     Hand hand;
+    Deck deck;
     struct CacheEntry *next;
 } CacheEntry;
 
-int are_hands_equal(Hand hand1, Hand hand2) {
-    if (hand1.size != hand2.size) {
+int are_entries_equal(Hand hand0, Hand hand1, Deck deck0, Deck deck1) {
+    if (hand0.size != hand1.size) {
         return 0;
     }
 
-    // At this point the hands are the same size
-    for (int i = 0; i < hand1.size; i++) {
-        if (hand1.cards[i] != hand2.cards[i]) {
+    if (deck0.size != deck1.size) {
+        return 0;
+    }
+
+    // At this point the hands and decks are the same size
+    for (int i = 0; i < hand0.size; i++) {
+        if (hand0.cards[i] != hand1.cards[i]) {
             return 0;
         }
     }
+
+    for (int i = 0; i < CARDS_LENGTH; i++) {
+        if (deck0.amounts[i] != deck1.amounts[i]) {
+            return 0;
+        }
+    }
+
     // At this point all cards are the same
     return 1;
 }
 
 // Use linear search to search linked list
-int in_cache(CacheEntry *cache_list_pointer, Hand target_hand) {
+int in_cache(CacheEntry *cache_list_pointer, Hand target_hand, Deck target_deck) {
     CacheEntry *current_pointer = cache_list_pointer;
 
     while (current_pointer != NULL) {
-        if (are_hands_equal(current_pointer->hand, target_hand)) {
+        if (are_entries_equal(current_pointer->hand, target_hand, current_pointer->deck, target_deck)) {
             return 1;
         }
         current_pointer = current_pointer->next;
@@ -64,7 +81,7 @@ Hand sort_hand(Hand hand) {
     return hand;
 }
 
-CacheEntry *add_cache(CacheEntry *cache_list_pointer, Hand hand) {
+CacheEntry *add_cache(CacheEntry *cache_list_pointer, Hand hand, Deck deck) {
     CacheEntry *new_entry_ptr = malloc(sizeof(CacheEntry));
     if (new_entry_ptr == NULL) {
         perror("malloc failed");
@@ -73,6 +90,7 @@ CacheEntry *add_cache(CacheEntry *cache_list_pointer, Hand hand) {
 
     // New entry is a pointer to the new cache entry
     new_entry_ptr->hand = hand;
+    new_entry_ptr->deck = deck;
     new_entry_ptr->next = cache_list_pointer;
 
     // cache_list_pointer wants to point to the new entry
@@ -97,33 +115,34 @@ int has_ace(Hand hand) {
     return 0;
 }
 
-CacheEntry *add_starthand_subhands(CacheEntry *cache_list_pointer, Hand hand) {
+CacheEntry *add_starthand_subhands(CacheEntry *cache_list_pointer, Hand hand, Deck deck) {
     hand = sort_hand(hand);
 
-    if (in_cache(cache_list_pointer, hand)) {
+    if (in_cache(cache_list_pointer, hand, deck)) {
         return cache_list_pointer;
     }
 
-    cache_list_pointer = add_cache(cache_list_pointer, hand);
+    cache_list_pointer = add_cache(cache_list_pointer, hand, deck);
 
     int value = get_value(hand);
     if (value != 21 && !(value == 11 && has_ace(hand)) && hand.size != HAND_SIZE_LIMIT) {
         for (int i = 0; i < CARDS_LENGTH; i++) {
             Hand new_hand;
-            new_hand.size = hand.size + 1;
-
-            for (int i = 0; i < hand.size; i++) {
-                new_hand.cards[i] = hand.cards[i];
-            }
-
+            new_hand = hand;
+            new_hand.size++;
             new_hand.cards[hand.size] = CARDS[i];
 
             if (get_value(new_hand) > 21) {
                 continue;
             }
 
+            Deck new_deck;
+            new_deck = deck;
+            new_deck.size++;
+            new_deck.amounts[i]++;
+
             // We know we have a valid hand to check for caching again
-            cache_list_pointer = add_starthand_subhands(cache_list_pointer, new_hand);
+            cache_list_pointer = add_starthand_subhands(cache_list_pointer, new_hand, new_deck);
         }
     }
     return cache_list_pointer;
@@ -153,6 +172,11 @@ void free_cache(CacheEntry *cache_list_pointer) {
 int main() {
     CacheEntry *cache_list_pointer = NULL;
 
+    Deck deck;
+    for (int i = 0; i < CARDS_LENGTH; i++) {
+        deck.amounts[i] = 0;
+    }
+
     for (int i = 0; i < CARDS_LENGTH; i++) {
         for (int j = 0; j < CARDS_LENGTH; j++) {
             Hand hand;
@@ -160,7 +184,7 @@ int main() {
             hand.cards[1] = CARDS[j];
             hand.size = 2;
 
-            cache_list_pointer = add_starthand_subhands(cache_list_pointer, hand);
+            cache_list_pointer = add_starthand_subhands(cache_list_pointer, hand, deck);
         }
     }
 

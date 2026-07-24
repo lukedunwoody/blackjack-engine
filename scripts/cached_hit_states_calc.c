@@ -2,10 +2,11 @@
 #include <stdio.h>
 
 #define HAND_SIZE_LIMIT 20 // 20 recommended so CacheEntry is 32 bytes, range 2-20
-#define CACHE_ARRAY_LENGTH 3062 // Set to whatever the corresponding hand length gives
+#define CACHE_ARRAY_LENGTH 15749 // Set to whatever the corresponding hand length gives
+#define LUT_ARRAY_LENGTH 55
+#define CARDS_LENGTH 10
 
 static const uint8_t CARDS[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-static const int CARDS_LENGTH = 10;
 
 typedef struct {
     int8_t cards[HAND_SIZE_LIMIT];
@@ -13,7 +14,13 @@ typedef struct {
 } Hand;
 
 typedef struct {
+    int8_t amounts[CARDS_LENGTH];
+    int size;
+} Deck;
+
+typedef struct {
     Hand hand;
+    Deck deck;
     uint64_t unique_states;
 } CacheEntry;
 
@@ -29,7 +36,7 @@ typedef struct {
 } LutEntry;
 
 typedef struct {
-    LutEntry list[55];
+    LutEntry list[LUT_ARRAY_LENGTH];
     int size;
 } LutTable;
 
@@ -56,8 +63,12 @@ Hand sort_hand(Hand hand) {
     return hand;
 }
 
-int are_hands_equal(Hand hand0, Hand hand1) {
+int are_entries_equal(Hand hand0, Hand hand1, Deck deck0, Deck deck1) {
     if (hand0.size != hand1.size) {
+        return 0;
+    }
+
+    if (deck0.size != deck1.size) {
         return 0;
     }
 
@@ -67,13 +78,19 @@ int are_hands_equal(Hand hand0, Hand hand1) {
             return 0;
         }
     }
+
+    for (int i = 0; i < CARDS_LENGTH; i++) {
+        if (deck0.amounts[i] != deck1.amounts[i]) {
+            return 0;
+        }
+    }
     // At this point all cards are the same
     return 1;
 }
 
-int in_cache(Hand target_hand, CacheTable *cache_table_ptr) {
+int in_cache(CacheTable *cache_table_ptr, Hand target_hand, Deck target_deck) {
     for (int i = 0; i < cache_table_ptr->size; i++) {
-        if (are_hands_equal(cache_table_ptr->list[i].hand, target_hand)) {
+        if (are_entries_equal(cache_table_ptr->list[i].hand, target_hand, cache_table_ptr->list[i].deck, target_deck)) {
             return 1;
         }
     }
@@ -89,16 +106,17 @@ int has_ace(Hand hand) {
     return 0;
 }
 
-void add_cache(Hand hand, uint64_t unique_states, CacheTable *cache_table_ptr) {
+void add_cache(CacheTable *cache_table_ptr, Hand hand, Deck deck, uint64_t unique_states) {
     CacheEntry cache_entry;
     cache_entry.hand = hand;
+    cache_entry.deck = deck;
     cache_entry.unique_states = unique_states;
 
     cache_table_ptr->list[cache_table_ptr->size] = cache_entry;
     cache_table_ptr->size++;
 }
 
-void add_lut(Hand hand, uint64_t unique_states, LutTable *lut_table_ptr) {
+void add_lut(LutTable *lut_table_ptr, Hand hand, uint64_t unique_states) {
     // Assume hand size is 2
     LutEntry lut_entry;
     lut_entry.card0 = hand.cards[0];
@@ -109,7 +127,7 @@ void add_lut(Hand hand, uint64_t unique_states, LutTable *lut_table_ptr) {
     lut_table_ptr->size++;
 }
 
-uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr, LutTable *lut_table_ptr) {
+uint64_t cached_hit(CacheTable *cache_table_ptr, LutTable *lut_table_ptr, Hand hand, Deck deck) {
     uint64_t unique_states = 0;
 
     for (int i = 0; i < CARDS_LENGTH; i++) {
@@ -128,11 +146,15 @@ uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr, LutTable *lut_table_
             continue;
         }
 
+        Deck new_deck = deck;
+        new_deck.size++;
+        new_deck.amounts[i]++;
+
         // Sort
         new_hand = sort_hand(new_hand);
 
         // Check if in cache
-        if (in_cache(new_hand, cache_table_ptr)) {
+        if (in_cache(cache_table_ptr, new_hand, new_deck)) {
             // Eventually get this to increase weight of that entry
             continue;
         }
@@ -141,19 +163,25 @@ uint64_t cached_hit(Hand hand, CacheTable *cache_table_ptr, LutTable *lut_table_
 
         // Check if 21 or card limit before calling again
         if (value != 21 && !(value == 11 && has_ace(new_hand)) && new_hand.size < HAND_SIZE_LIMIT) {
-            unique_states += cached_hit(new_hand, cache_table_ptr, lut_table_ptr);
+            unique_states += cached_hit(cache_table_ptr, lut_table_ptr, new_hand, new_deck);
         }
     }
-    add_cache(hand, unique_states, cache_table_ptr);
+    add_cache(cache_table_ptr, hand, deck, unique_states);
 
     if (hand.size == 2) {
-        add_lut(hand, unique_states, lut_table_ptr);
+        add_lut(lut_table_ptr, hand, unique_states);
     }
     return unique_states;
 }
 
 int main() {
     uint64_t unique_states = 0;
+
+    Deck deck;
+    for (int i = 0; i < CARDS_LENGTH; i++) {
+        deck.amounts[i] = 0;
+    }
+    deck.size = 0;
 
     CacheTable cache_table;
     cache_table.size = 0;
@@ -166,7 +194,11 @@ int main() {
         hand.cards[0] = CARDS[i];
         hand.size = 1;
 
-        unique_states += cached_hit(hand, &cache_table, &lut_table);
+        Deck new_deck = deck;
+        new_deck.size = 1;
+        new_deck.amounts[i]++;
+
+        unique_states += cached_hit(&cache_table, &lut_table, hand, deck);
     }
     FILE *file = fopen("../data/luts/two_card_hit_unique_states.bin", "wb");
     if (file != NULL) {

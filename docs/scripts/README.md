@@ -63,6 +63,7 @@ First implementation of linked list caching.
 #### Result:
 
 3,062 unique hands.
+15749
 
 ### `cached_hit_states_calc.c`
 
@@ -75,6 +76,7 @@ Adds to the total amount of max states the final engine will need to calculate t
 #### Result:
 
 4,717 unique states per hit, for all 55 two card hands.
+14545
 
 ### `cached_split_states_calc.c`
 
@@ -97,7 +99,7 @@ Determines how many dealer states are required for each player state evaluation.
 
 #### Result:
 
-2,682 unique dealer hands.
+13,576 unique dealer hands.
 
 ## What these numbers mean
 
