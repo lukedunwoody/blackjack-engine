@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #define HAND_SIZE_LIMIT 20 // 20 recommended so CacheEntry is 32 bytes, range 2-20
-#define CACHE_ARRAY_LENGTH 15749 // Set to whatever the corresponding hand length gives
+#define CACHE_ARRAY_LENGTH 3062 // Set to whatever the corresponding hand length gives
 #define LUT_ARRAY_LENGTH 55
 #define CARDS_LENGTH 10
 
@@ -58,8 +58,10 @@ Hand sort_hand(Hand hand) {
             hand.cards[j + 1] = hand.cards[j];
             j--;
         }
+
         hand.cards[j+1] = key;
     }
+
     return hand;
 }
 
@@ -84,6 +86,7 @@ int are_entries_equal(Hand hand0, Hand hand1, Deck deck0, Deck deck1) {
             return 0;
         }
     }
+
     // At this point all cards are the same
     return 1;
 }
@@ -130,47 +133,55 @@ void add_lut(LutTable *lut_table_ptr, Hand hand, uint64_t unique_states) {
 uint64_t cached_hit(CacheTable *cache_table_ptr, LutTable *lut_table_ptr, Hand hand, Deck deck) {
     uint64_t unique_states = 0;
 
-    for (int i = 0; i < CARDS_LENGTH; i++) {
-        // Append card
-        Hand new_hand;
-        new_hand.size = hand.size + 1;
+    int value = get_value(hand);
+    if (value < 21 && !(value == 11 && has_ace(hand)) && hand.size < HAND_SIZE_LIMIT) {
+        for (int i = 0; i < CARDS_LENGTH; i++) {
+            // Append card
+            Hand new_hand;
+            new_hand.size = hand.size + 1;
 
-        for (int j = 0; j < hand.size; j++) {
-            new_hand.cards[j] = hand.cards[j];
-        }
-        new_hand.cards[hand.size] = CARDS[i];
+            for (int j = 0; j < hand.size; j++) {
+                new_hand.cards[j] = hand.cards[j];
+            }
+            new_hand.cards[hand.size] = CARDS[i];
 
-        // Check validity
-        int value = get_value(new_hand);
-        if (value > 21) {
-            continue;
-        }
+            // Check validity
+            int value = get_value(new_hand);
+            if (value > 21) {
+                continue;
+            }
 
-        Deck new_deck = deck;
-        new_deck.size++;
-        new_deck.amounts[i]++;
+            Deck new_deck = deck;
+            new_deck.size++;
+            new_deck.amounts[i]++;
 
-        // Sort
-        new_hand = sort_hand(new_hand);
+            // Sort
+            new_hand = sort_hand(new_hand);
 
-        // Check if in cache
-        if (in_cache(cache_table_ptr, new_hand, new_deck)) {
-            // Eventually get this to increase weight of that entry
-            continue;
-        }
+            // Check if in cache
+            if (in_cache(cache_table_ptr, new_hand, new_deck)) {
+                // Eventually get this to increase weight of that entry
+                continue;
+            }
 
-        unique_states++;
-
-        // Check if 21 or card limit before calling again
-        if (value != 21 && !(value == 11 && has_ace(new_hand)) && new_hand.size < HAND_SIZE_LIMIT) {
+            // Check if 21 or card limit before calling again
             unique_states += cached_hit(cache_table_ptr, lut_table_ptr, new_hand, new_deck);
         }
     }
-    add_cache(cache_table_ptr, hand, deck, unique_states);
+
+    if (hand.size > 2) {
+        unique_states++;
+    }
+
+    if (hand.size > 1) {
+        // Only count states that have actaully hit from a 2 card hand, making the resulting hand over 3 cards
+        add_cache(cache_table_ptr, hand, deck, unique_states);
+    }
 
     if (hand.size == 2) {
         add_lut(lut_table_ptr, hand, unique_states);
     }
+
     return unique_states;
 }
 
@@ -198,14 +209,16 @@ int main() {
         new_deck.size = 1;
         new_deck.amounts[i]++;
 
-        unique_states += cached_hit(&cache_table, &lut_table, hand, deck);
+        unique_states += cached_hit(&cache_table, &lut_table, hand, new_deck);
     }
+
     FILE *file = fopen("../data/luts/two_card_hit_unique_states.bin", "wb");
     if (file != NULL) {
         fwrite(&lut_table, sizeof(LutTable), 1, file);
         fclose(file);
     }
 
+    printf("Max cache size: %i\n", cache_table.size);
     printf("Maximum unique states for a hit: %llu\n", unique_states);
     getchar();
 }

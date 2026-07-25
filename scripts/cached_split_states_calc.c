@@ -100,24 +100,25 @@ uint64_t cached_split(CacheTable *cache_table_ptr, LutTable *lut_table_ptr, uint
     new_deck.amounts[card]++;
 
     if (in_cache(cache_table_ptr, card, new_deck, remaining_splits)) {
-        printf("hit");
         return 0;
     }
-
-    unique_states++;
 
     for (int i = 0; i < CARDS_LENGTH; i++) {
         if (card == CARDS[i] && remaining_splits > 0) {
             unique_states += cached_split(cache_table_ptr, lut_table_ptr, card, new_deck, remaining_splits-1);
         } else {
-            // Sort hand before checking LUT
-            if (card < CARDS[i]) {
-                unique_states += get_lut_unique_states(card, CARDS[i], lut_table_ptr) + 12;
+            // Sort hand before checking LUT or blackjack
+            uint8_t low_card = card < CARDS[i] ? card : CARDS[i];
+            uint8_t high_card = card < CARDS[i] ? CARDS[i] : card;
+
+            if (low_card == 1 && high_card == 10) {
+                unique_states++;
             } else {
-                unique_states += get_lut_unique_states(CARDS[i], card, lut_table_ptr) + 12;
+                unique_states += get_lut_unique_states(low_card, high_card, lut_table_ptr) + 12;
             }
         }
     }
+    unique_states++;
     add_cache(cache_table_ptr, card, new_deck, remaining_splits, unique_states);
     return unique_states;
 }

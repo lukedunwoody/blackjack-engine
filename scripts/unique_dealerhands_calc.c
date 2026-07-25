@@ -116,8 +116,8 @@ CacheEntry *add_starthand_subhands(CacheEntry *cache_list_pointer, Hand hand, De
 
     int value = get_value(hand);
     // Only logic difference is to change when we append a card
-    // Add hitting on soft 17 because that will always
-    if (((value < 17) || (value < 8 && has_ace(hand))) && hand.size != HAND_SIZE_LIMIT) {
+    // Hit below 17, except stand on soft 18 through soft 21.
+    if ((value < 17) && !(8 <= value && value <= 11 && has_ace(hand)) && hand.size != HAND_SIZE_LIMIT) {
         for (int i = 0; i < CARDS_LENGTH; i++) {
             Hand new_hand;
             new_hand = hand;
@@ -163,19 +163,24 @@ void free_cache(CacheEntry *cache_list_pointer) {
 int main() {
     CacheEntry *cache_list_pointer = NULL;
 
-    Deck deck;
-    for (int i = 0; i < CARDS_LENGTH; i++) {
-        deck.amounts[i] = 0;
-    }
+    Deck deck = {0};
 
     for (int i = 0; i < CARDS_LENGTH; i++) {
+        Deck new_deck_i = deck;
+        new_deck_i.amounts[i]++;
+        new_deck_i.size++;
+
         for (int j = 0; j < CARDS_LENGTH; j++) {
+            Deck new_deck_j = new_deck_i;
+            new_deck_j.amounts[j]++;
+            new_deck_j.size++;
+
             Hand hand;
             hand.cards[0] = CARDS[i];
             hand.cards[1] = CARDS[j];
             hand.size = 2;
 
-            cache_list_pointer = add_starthand_subhands(cache_list_pointer, hand, deck);
+            cache_list_pointer = add_starthand_subhands(cache_list_pointer, hand, new_deck_j);
         }
     }
 

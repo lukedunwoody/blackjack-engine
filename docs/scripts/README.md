@@ -4,7 +4,7 @@ The seven scripts inside the scripts folder estimate the number of possible game
 
 This is also my first project using C, so these scripts served as a way to learn the language, optimization, and conventions that will be used in the final implementation.
 
-Inside this folder are the rough design sketches that helped visualize and plan the simulation scripts before implementation, as well as explanations for what each script does and why it's helpful.
+Inside this folder are also the rough design sketches that helped visualize and plan the simulation scripts before implementation, as well as explanations for what each script does and why it's helpful.
 
 ## Script Breakdowns
 
@@ -14,11 +14,11 @@ In this document, a state refers to a unique possible game situation that the fi
 
 ### `unique_starthands_calc.c`
 
-Calculates the amount of unique two card hands (starting hands) that can exist with no duplicates.
+Calculates the number of unique two-card hands (starting hands) that can exist with no duplicates.
 
 #### Role:
-- Determine the amount of different player trees before any cards are dealt.
-- Determine sizing of future two card hand cache and LUT tables.
+- Determine the number of different player trees before any cards are dealt.
+- Determine the sizing of future two-card hand cache and LUT tables.
 
 #### Personal Milestones:
 - First working C program.
@@ -26,7 +26,7 @@ Calculates the amount of unique two card hands (starting hands) that can exist w
 
 #### Result:
 
-55 unique two card hands.
+55 unique two-card hands.
 
 ### `hit_sims_calc.c`
 
@@ -36,7 +36,7 @@ This script is kept for comparison purposes to demonstrate the impact caching ha
 
 #### Result:
 
-5,483,410 states per hit with no caching, for all 55 two card hands.
+5,483,410 states per hit with no caching, for all 55 two-card hands.
 
 ### `split_sims_calc.c`
 
@@ -46,7 +46,7 @@ This script is kept for comparison purposes to demonstrate the impact caching an
 
 #### Result:
 
-344,901,480 states per split with no caching or LUTs, for all 10 cards, with a max split limit of 4.
+344,901,480 states per split with no caching or LUTs, for all 10 cards, with a maximum split limit of 4.
 
 ### `unique_totalhands_calc.c`
 
@@ -54,7 +54,7 @@ Calculates the number of possible player hands after removing duplicate hands an
 
 #### Role:
 
-Determine the max size a cache table would need to be to store some information for all possible hands in a normal array for speed.
+Determine the maximum size a cache table would need to be to store information for all possible hands in a normal array for speed.
 
 #### Personal Milestones:
 
@@ -63,31 +63,29 @@ First implementation of linked list caching.
 #### Result:
 
 3,062 unique hands.
-15749
 
 ### `cached_hit_states_calc.c`
 
-Calculates the number of unique hit states after caching removes duplicate states across all 55 possible starting hands.
+Calculates the number of non-bust outcome states a hit can create across all 55 starting hands.
 
 #### Role:
 
-Adds to the total amount of max states the final engine will need to calculate to find the EV of a deck state before any cards are dealt, giving a rough estimate of how long the calculator will take.
+Adds to the total number of maximum states the final engine will need to calculate to find the EV of a deck state before any cards are dealt, giving a rough estimate of how long the calculator will take.
 
 #### Result:
 
-4,717 unique states per hit, for all 55 two card hands.
-14545
+3,007 unique states per hit, for all 55 two-card hands.
 
 ### `cached_split_states_calc.c`
 
-Calculates the number of unique split states after caching removes duplicate states across all 10 cards.
+Calculates the number of non-bust outcome states a split can create across all 10 splittable two-card hands.
 
 #### Role:
 Same as `cached_hit_states_calc.c`
 
 #### Result:
 
-17,576 unique states per split, for all 10 cards, with a max split limit of 4.
+12,635 unique states per split, for all 10 cards, with a maximum split limit of 4.
 
 ### `unique_dealerhands_calc.c`
 
@@ -99,26 +97,32 @@ Determines how many dealer states are required for each player state evaluation.
 
 #### Result:
 
-13,576 unique dealer hands.
+2,375 unique dealer hands.
 
 ## What these numbers mean
 
-Before any cards are dealt, there are 55 possible starting player hands. For each of these hands, the engine must evaluate every possible action. The maximum number of unique player states created by each decision is:
+Before any cards are dealt, there are 55 possible starting player hands. For each of these hands, the engine must evaluate every possible action. The maximum number of unique player outcomes created by each decision is:
 
-- Hit: 4,717
+- Hit: 3,007
 - Stand: 55
-- Double: 550
-- Surrender: 55
-- Split: 17,576
+- Double: 540
+- Surrender: 54
+- Split: 12,635
 
-Total: 22,953
+Total: 16,291
 
-Each player state also requires evaluating every possible dealer outcome. Since there are 2,682 unique dealer states, the theoretical maximum workload before any other optimizations are:
+Each player state also requires evaluating every possible dealer outcome. Since there are 2,375 unique dealer states, the theoretical maximum workload before any other optimizations is:
 
 ```
-  22,953 * 2,682
-= 61,559,946 total simulations
+  16,291 * 2,375
+= 38,691,125 total simulations
 ```
+
+## Accounting for decks
+
+A key element I forgot during the creation of the original simulator was that every unique state also comes with not only a specific hand, but a specific deck. However, I had another realization after implementing it: the deck is just another way to represent the player's hand, so it actually makes no impact on the simulation amounts. Therefore, any references to this can be ignored in the scripts.
+
+I also fixed a variety of bugs that were in the scripts before, which I only found because of the deck implementation, so that's good. I didn't realize that total hands > player hands > dealer hands. Now everything adds up; before, it didn't.
 
 ## Design Sketch
 
