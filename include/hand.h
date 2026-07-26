@@ -5,10 +5,7 @@
 
 #include "card.h"
 
-typedef struct {
-    uint8_t counts[CARD_COUNT];
-    uint8_t size;
-} Hand;
+typedef CardCount Hand;
 
 int get_hand_value(Hand hand);
 int is_soft(Hand hand);

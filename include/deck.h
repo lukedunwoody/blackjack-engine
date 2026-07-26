@@ -5,10 +5,7 @@
 
 #include "card.h"
 
-typedef struct {
-    uint8_t counts[CARD_COUNT];
-    uint16_t size;
-} Deck;
+typedef CardCount Deck;
 
 Deck generate_deck(int num_decks);
 
