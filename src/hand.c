@@ -16,6 +16,23 @@ int get_hand_value(Hand hand) {
     return value;
 }
 
+int is_soft(Hand hand) {
+    if (hand.counts[ACE] == 0) {
+        return 0;
+    }
+
+    int value = 0;
+    for (Card card = ACE; card < CARD_COUNT; card++) {
+        value += hand.counts[card] * (card + 1);
+    }
+
+    if (value >= 11) {
+        return 1;
+    }
+
+    return 0;
+}
+
 int is_blackjack(Hand hand) {
     return hand.size == 2 && hand.counts[ACE] && hand.counts[TEN];
 }
