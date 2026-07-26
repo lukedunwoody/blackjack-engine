@@ -131,7 +131,7 @@ The `.excalidraw` can be opened at [excalidraw.com](https://excalidraw.com/) for
 ### Preview
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="script-design-dark-preview.png">
-  <source media="(prefers-color-scheme: light)" srcset="script-design-light-preview.png">
-  <img alt="Design Sketch" src="script-design-dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="images/script-design-dark-preview.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/script-design-light-preview.svg">
+  <img alt="Design Sketch" src="images/script-design-dark.png">
 </picture>
