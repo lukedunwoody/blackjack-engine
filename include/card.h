@@ -24,5 +24,6 @@ typedef struct {
 
 CardCount append_card(CardCount card_count, Card card);
 CardCount remove_card(CardCount card_count, Card card);
+void print_card_count(CardCount card_count);
 
 #endif
