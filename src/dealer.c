@@ -13,7 +13,7 @@ int should_dealer_hit(Hand dealer_hand, int s17) {
     return (value < 17) || (value == 17 && soft && s17);
 }
 
-double dealer_ev(CacheTable *dealer_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
+double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
     // assumes player_hand is not a bust and dealer_hand is at least 1 card and not a bust
 
     double results[CARD_COUNT];
@@ -32,10 +32,10 @@ double dealer_ev(CacheTable *dealer_cache_table_ptr, Hand player_hand, Hand deal
         }
 
         // Check cache
-        int position = get_cache_position(dealer_cache_table_ptr, new_hand);
+        int position = get_dealer_cache_position(dealer_cache_table_ptr, new_hand);
 
         if (position != -1) {
-            results[card] = get_cache_ev(dealer_cache_table_ptr, position);
+            results[card] = get_dealer_cache_ev(dealer_cache_table_ptr, position);
             continue;
         }
 
@@ -56,6 +56,6 @@ double dealer_ev(CacheTable *dealer_cache_table_ptr, Hand player_hand, Hand deal
     }
 
     double average_ev = get_average_ev(results, deck);
-    add_cache(dealer_cache_table_ptr, dealer_hand, average_ev);
+    add_dealer_cache(dealer_cache_table_ptr, dealer_hand, average_ev);
     return average_ev;
 }
