@@ -1,5 +1,6 @@
 #include "cache.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "card.h"
@@ -50,7 +51,9 @@ CacheTable *make_cache_table(int elements) {
     CacheTable *cache_table_ptr = malloc(sizeof(CacheTable) + elements * sizeof(CacheEntry));
 
     if (cache_table_ptr == NULL) {
-        return NULL;
+        free(cache_table_ptr);
+        fprintf(stderr, "Error: Malloc failed when making cache table.\n");
+        exit(EXIT_FAILURE);
     }
 
     cache_table_ptr->size = 0;
