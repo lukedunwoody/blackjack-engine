@@ -13,8 +13,8 @@ typedef struct {
     CacheEntry table[];
 } CacheTable;
 
-int in_cache(CacheTable *cache_table_ptr, Hand hand);
-double get_cache(CacheTable *cache_table_ptr, int position);
+int get_cache_position(CacheTable *cache_table_ptr, Hand hand);
+double get_cache_ev(CacheTable *cache_table_ptr, int position);
 void add_cache(CacheTable *cache_table_ptr, Hand hand, double ev);
 
 CacheTable *make_cache_table(int elements);

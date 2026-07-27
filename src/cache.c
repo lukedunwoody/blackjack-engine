@@ -8,7 +8,7 @@
 #define PLAYER_CACHE_SIZE 3062
 #define DEALER_CACHE_SIZE 2375
 
-int in_cache(CacheTable *cache_table_ptr, Hand target_hand) {
+int get_cache_position(CacheTable *cache_table_ptr, Hand target_hand) {
     for (int i = 0; i < cache_table_ptr->size; i++) {
         Hand current_hand = cache_table_ptr->table[i].hand;
 
@@ -33,7 +33,7 @@ int in_cache(CacheTable *cache_table_ptr, Hand target_hand) {
     return -1;
 }
 
-double get_cache(CacheTable *cache_table_ptr, int position) {
+double get_cache_ev(CacheTable *cache_table_ptr, int position) {
     return cache_table_ptr->table[position].ev;
 }
 
