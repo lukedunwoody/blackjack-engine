@@ -2,6 +2,7 @@
 #define EV_H
 
 #include "card.h"
+#include "deck.h"
 
 typedef enum {
     LOSE = -1,
@@ -9,6 +10,6 @@ typedef enum {
     WIN = 1
 } Outcome;
 
-double get_average_ev(double results[CARD_COUNT]);
+double get_average_ev(double results[CARD_COUNT], Deck deck);
 
 #endif

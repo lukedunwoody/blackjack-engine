@@ -1,13 +1,14 @@
 #include "ev.h"
 
 #include "card.h"
+#include "deck.h"
 
-double get_average_ev(double results[CARD_COUNT]) {
-    double total_ev = 0;
+double get_average_ev(double results[CARD_COUNT], Deck deck) {
+    double average_ev = 0;
 
     for (Card card = ACE; card < CARD_COUNT; card++) {
-        total_ev += results[card];
+        average_ev += results[card] * deck.counts[card]/deck.size;
     }
 
-    return total_ev/CARD_COUNT;
+    return average_ev;
 }

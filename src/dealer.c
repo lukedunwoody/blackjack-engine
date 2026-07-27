@@ -55,7 +55,7 @@ double dealer_ev(CacheTable *dealer_cache_table_ptr, Hand player_hand, Hand deal
         }
     }
 
-    double average_ev = get_average_ev(results);
+    double average_ev = get_average_ev(results, deck);
     add_cache(dealer_cache_table_ptr, dealer_hand, average_ev);
     return average_ev;
 }
