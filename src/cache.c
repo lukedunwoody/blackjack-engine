@@ -51,18 +51,32 @@ void add_player_cache(PlayerCacheTable *cache_table_ptr, Hand hand, MoveEV best_
     cache_table_ptr->size++;
 }
 
-DealerCacheTable make_dealer_cache_table() {
-    DealerCacheTable dealer_cache_table = {
-        .size = 0
-    };
+DealerCacheTable *make_dealer_cache_table() {
+    DealerCacheTable *dealer_cache_table_ptr = malloc(sizeof(DealerCacheTable));
 
-    return dealer_cache_table;
+    if (dealer_cache_table_ptr == NULL) {
+        fprintf(stderr, "Fatal Error: Heap allocation failed for DealerCacheTable.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    dealer_cache_table_ptr->size = 0;
+
+    return dealer_cache_table_ptr;
 }
 
-PlayerCacheTable make_player_cache_table() {
-    PlayerCacheTable player_cache_table = {
-        .size = 0
-    };
+PlayerCacheTable *make_player_cache_table() {
+    PlayerCacheTable *player_cache_table_ptr = malloc(sizeof(PlayerCacheTable));
 
-    return player_cache_table;
+    if (player_cache_table_ptr == NULL) {
+        fprintf(stderr, "Fatal Error: Heap allocation failed for PlayerCacheTable.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    player_cache_table_ptr->size = 0;
+
+    return player_cache_table_ptr;
+}
+
+void free_cache_table(void *cache_table_ptr) {
+    free(cache_table_ptr);
 }

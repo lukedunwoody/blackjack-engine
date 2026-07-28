@@ -4,7 +4,7 @@
 #include "hand.h"
 
 #define DEALER_CACHE_SIZE 2375
-#define PLAYER_CACHE_SIZE 3062
+#define PLAYER_CACHE_SIZE 3081 // including 1 card hands and 21s, 3062 was slightly overflowing
 
 typedef enum {
     STAND,
@@ -50,7 +50,9 @@ int get_player_cache_position(PlayerCacheTable *cache_table_ptr, Hand target_han
 MoveEV get_player_cache_best_move_ev(PlayerCacheTable *cache_table_ptr, int position);
 void add_player_cache(PlayerCacheTable *cache_table_ptr, Hand hand, MoveEV best_move_ev);
 
-DealerCacheTable make_dealer_cache_table();
-PlayerCacheTable make_player_cache_table();
+DealerCacheTable *make_dealer_cache_table();
+PlayerCacheTable *make_player_cache_table();
+
+void free_cache_table(void *cache_table_ptr);
 
 #endif
