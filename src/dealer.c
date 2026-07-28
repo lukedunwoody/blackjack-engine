@@ -21,6 +21,11 @@ double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Han
     int player_value = get_hand_value(player_hand);
 
     for (Card card = ACE; card < CARD_COUNT; card++) {
+        if (deck.counts[card] == 0) {
+            results[card] = 0;
+            continue;
+        }
+
         // Append card
         Hand new_hand = append_card(dealer_hand, card);
         Deck new_deck = remove_card(deck, card);
