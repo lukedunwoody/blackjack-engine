@@ -24,8 +24,8 @@ int main() {
 
     DealerCacheTable *dealer_cache_table_ptr = make_dealer_cache_table();
     double dealer_ev_result = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17);
-    free_cache_table(dealer_cache_table_ptr);
 
     printf("Cache size: %i\n", dealer_cache_table_ptr->size);
+    free_cache_table(dealer_cache_table_ptr);
     printf("Dealer EV result: %f\n", dealer_ev_result);
 }
