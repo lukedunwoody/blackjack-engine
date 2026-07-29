@@ -27,20 +27,20 @@
         "type": 3
       },
       "seed": 1238652380,
-      "version": 188,
-      "versionNonce": 1806433508,
+      "version": 189,
+      "versionNonce": 1209759768,
       "isDeleted": false,
       "boundElements": [
         {
-          "id": "4BlekTA93KGGQR8Jirulk",
+          "id": "HFHtECGOM8Z359G9SQyBN",
           "type": "arrow"
         },
         {
-          "id": "HFHtECGOM8Z359G9SQyBN",
+          "id": "4BlekTA93KGGQR8Jirulk",
           "type": "arrow"
         }
       ],
-      "updated": 1784869759149,
+      "updated": 1785293129840,
       "link": null,
       "locked": false
     },
@@ -86,9 +86,9 @@
     {
       "id": "XheOxI8ic40L7FVXQY-BV",
       "type": "rectangle",
-      "x": -92.78871723747761,
+      "x": -92.33417178293217,
       "y": 415.7475549439524,
-      "width": 456,
+      "width": 459.6363636363637,
       "height": 318,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -107,8 +107,8 @@
         "type": 3
       },
       "seed": 726290908,
-      "version": 2009,
-      "versionNonce": 871031780,
+      "version": 2031,
+      "versionNonce": 2070080792,
       "isDeleted": false,
       "boundElements": [
         {
@@ -116,16 +116,16 @@
           "type": "arrow"
         }
       ],
-      "updated": 1784870642785,
+      "updated": 1785293134138,
       "link": null,
       "locked": false
     },
     {
       "id": "thurGXDmytAMC4iMRVljE",
       "type": "text",
-      "x": -68.28871723747761,
+      "x": -67.83417178293217,
       "y": 437.7475549439524,
-      "width": 407,
+      "width": 418,
       "height": 275,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -142,29 +142,29 @@
       "index": "b8q",
       "roundness": null,
       "seed": 1702653540,
-      "version": 1320,
-      "versionNonce": 1758439652,
+      "version": 1345,
+      "versionNonce": 815021160,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1784870644955,
+      "updated": 1785293129840,
       "link": null,
       "locked": false,
-      "text": "Setting (flag) (default) (range)\nNumber of decks (d) (8) (1-15)\nBlackjack payout (p) (1.5) (1-2)\nSurrender Allowed (s) (false) (0-1)\nDealer hits s17 (s17) (false) (0-1)\nDouble after split (das) (true) (0-1)\nResplit aces (rsa) (true) (0-1)\nPlay on split aces (psa) (true) (0-1)\nMax Splits (ms) (4) (1-16)\nDouble Restrictions (dr) (any) (1-10)\nDealer peeks hole (dp) (true) (0-1)",
+      "text": "Setting (flag) (default) (range)\nNumber of decks (d) (8) (1-15)\nBlackjack payout (p) (1.5) (1-2)\nSurrender Allowed (s) (false) (0-1)\nDealer hits s17 (s17) (false) (0-1)\nDouble after split (das) (true) (0-1)\nResplit aces (rsa) (false) (0-1)\nPlay on split aces (psa) (false) (0-1)\nMax Splits (ms) (4) (1-16)\nDouble Restrictions (dr) (any) (1-10)\nDealer peeks hole (dp) (true) (0-1)",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Setting (flag) (default) (range)\nNumber of decks (d) (8) (1-15)\nBlackjack payout (p) (1.5) (1-2)\nSurrender Allowed (s) (false) (0-1)\nDealer hits s17 (s17) (false) (0-1)\nDouble after split (das) (true) (0-1)\nResplit aces (rsa) (true) (0-1)\nPlay on split aces (psa) (true) (0-1)\nMax Splits (ms) (4) (1-16)\nDouble Restrictions (dr) (any) (1-10)\nDealer peeks hole (dp) (true) (0-1)",
+      "originalText": "Setting (flag) (default) (range)\nNumber of decks (d) (8) (1-15)\nBlackjack payout (p) (1.5) (1-2)\nSurrender Allowed (s) (false) (0-1)\nDealer hits s17 (s17) (false) (0-1)\nDouble after split (das) (true) (0-1)\nResplit aces (rsa) (false) (0-1)\nPlay on split aces (psa) (false) (0-1)\nMax Splits (ms) (4) (1-16)\nDouble Restrictions (dr) (any) (1-10)\nDealer peeks hole (dp) (true) (0-1)",
       "autoResize": true,
       "lineHeight": 1.25
     },
     {
       "id": "4BlekTA93KGGQR8Jirulk",
       "type": "arrow",
-      "x": 135.25530499567537,
+      "x": 137.38080711971955,
       "y": 739.7475549439524,
-      "width": 0.021144466305941023,
+      "width": 1.9990578053034085,
       "height": 80.40909090909076,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -181,11 +181,11 @@
         "type": 2
       },
       "seed": 1935647076,
-      "version": 95,
-      "versionNonce": 204261220,
+      "version": 117,
+      "versionNonce": 1337297432,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1784870642785,
+      "updated": 1785293134138,
       "link": null,
       "locked": false,
       "points": [
@@ -194,7 +194,7 @@
           0
         ],
         [
-          -0.021144466305941023,
+          -1.9990578053034085,
           80.40909090909076
         ]
       ],
@@ -5158,43 +5158,6 @@
       "lineHeight": 1.25
     },
     {
-      "id": "auWRlzq5s2yQ8cikBArTT",
-      "type": "text",
-      "x": -21.668877196197855,
-      "y": 3001.521132437161,
-      "width": 360.79949951171875,
-      "height": 20,
-      "angle": 0,
-      "strokeColor": "#2f9e44",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "bBE",
-      "roundness": null,
-      "seed": 374493517,
-      "version": 159,
-      "versionNonce": 103276045,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1785042116471,
-      "link": null,
-      "locked": false,
-      "text": "just realized this func is hand vs dealer",
-      "fontSize": 16,
-      "fontFamily": 8,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "just realized this func is hand vs dealer",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
       "id": "_kg0la7kbIBU-scXaF7Xi",
       "type": "text",
       "x": 67.56641692144933,
@@ -6187,43 +6150,6 @@
       "endArrowhead": "arrow",
       "elbowed": false,
       "moveMidPointsWithElement": false
-    },
-    {
-      "id": "YKcj0q5xhBI3NguIcyXYA",
-      "type": "text",
-      "x": 394.80171103909703,
-      "y": 3520.5799559665793,
-      "width": 519.1992797851562,
-      "height": 20,
-      "angle": 0,
-      "strokeColor": "#e03131",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "bBe",
-      "roundness": null,
-      "seed": 2046058851,
-      "version": 156,
-      "versionNonce": 1537473901,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1785043281715,
-      "link": null,
-      "locked": false,
-      "text": "a fully accurate split EV would unfortunately cost too much",
-      "fontSize": 16,
-      "fontFamily": 8,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "a fully accurate split EV would unfortunately cost too much",
-      "autoResize": true,
-      "lineHeight": 1.25
     },
     {
       "id": "S5iKoybFFJtDG-K1-3md6",
@@ -8639,10 +8565,10 @@
     {
       "id": "CPiP16mQ7E7YRu_Xw7f08",
       "type": "text",
-      "x": -92.12136588397937,
+      "x": -91.56581032842382,
       "y": 3914.462308907758,
-      "width": 616,
-      "height": 250,
+      "width": 660,
+      "height": 425,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -8656,20 +8582,733 @@
       "index": "bBn",
       "roundness": null,
       "seed": 61697507,
-      "version": 602,
-      "versionNonce": 707819235,
+      "version": 880,
+      "versionNonce": 1050587522,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1785044598257,
+      "updated": 1785130402323,
       "link": null,
       "locked": false,
-      "text": "The thing thats actually gonna make this good is caching\n- Track the EV of every hand (no deck needed)\n    Defined before any hands are simulated\n    Cache size totalhands\n    Should be done the by ev_stand function\n    Check before calling any move\n- Track the EV of every dealer hand (deck needed)\n    Cache size dealerhands\n    Every single ev_stand has its own local cache\n    Works the same as player cache",
+      "text": "The thing thats actually gonna make this good is caching\n- Track the EV of every hand (no deck needed)\n    Defined before any hands are simulated\n    Cache size totalhands\n    Should be done the by ev_stand function\n    Check before calling any move\n- Track the EV of every dealer hand (deck needed)\n    Cache size dealerhands\n    Every single ev_stand has its own local cache\n    Works the same as player cache\n\nAlso add weighing by remaining deck cards\n\nTODO:\nAsk user if dealer has blackjack after entering A or T if dp\nAt the highest level, loop through 10 cards for player\ncard and dealer card before calling any functions.",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "The thing thats actually gonna make this good is caching\n- Track the EV of every hand (no deck needed)\n    Defined before any hands are simulated\n    Cache size totalhands\n    Should be done the by ev_stand function\n    Check before calling any move\n- Track the EV of every dealer hand (deck needed)\n    Cache size dealerhands\n    Every single ev_stand has its own local cache\n    Works the same as player cache",
+      "originalText": "The thing thats actually gonna make this good is caching\n- Track the EV of every hand (no deck needed)\n    Defined before any hands are simulated\n    Cache size totalhands\n    Should be done the by ev_stand function\n    Check before calling any move\n- Track the EV of every dealer hand (deck needed)\n    Cache size dealerhands\n    Every single ev_stand has its own local cache\n    Works the same as player cache\n\nAlso add weighing by remaining deck cards\n\nTODO:\nAsk user if dealer has blackjack after entering A or T if dp\nAt the highest level, loop through 10 cards for player\ncard and dealer card before calling any functions.",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "SIV1mvav3FnM_cZr8p8dO",
+      "type": "text",
+      "x": 231.30092922716898,
+      "y": 3285.3359387823384,
+      "width": 228.7996826171875,
+      "height": 100,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBo",
+      "roundness": null,
+      "seed": 1706194163,
+      "version": 449,
+      "versionNonce": 942151613,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "8kBrKSXirBvF-DROME8Ov",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1785096769644,
+      "link": null,
+      "locked": false,
+      "text": "this arrow takes you to a\nseperate dealer function\nwhich is identical just \ntakes dealer_hand instead \nof dealer_upcard",
+      "fontSize": 16,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "this arrow takes you to a\nseperate dealer function\nwhich is identical just \ntakes dealer_hand instead \nof dealer_upcard",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "8kBrKSXirBvF-DROME8Ov",
+      "type": "arrow",
+      "x": 344.49127185303126,
+      "y": 3279.3359387823384,
+      "width": 14.8570092925288,
+      "height": 72.33333333332894,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBp",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1379115709,
+      "version": 427,
+      "versionNonce": 1378359325,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785096769644,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -14.8570092925288,
+          -72.33333333332894
+        ]
+      ],
+      "startBinding": {
+        "elementId": "SIV1mvav3FnM_cZr8p8dO",
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5001,
+          0
+        ]
+      },
+      "endBinding": null,
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "moveMidPointsWithElement": false
+    },
+    {
+      "id": "WdUEqyTw8l503_E0PCrMn",
+      "type": "text",
+      "x": -50.365737439497195,
+      "y": 3002.0026054489986,
+      "width": 439.9993896484375,
+      "height": 20,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBq",
+      "roundness": null,
+      "seed": 613184733,
+      "version": 149,
+      "versionNonce": 909806035,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785096791046,
+      "link": null,
+      "locked": false,
+      "text": "this function is just going to turn into dealer_ev",
+      "fontSize": 16,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "this function is just going to turn into dealer_ev",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "wp6BZAEzJbZxUYKT53hQO",
+      "type": "text",
+      "x": -90.5366776104367,
+      "y": 4360.870126816515,
+      "width": 145.6559295654297,
+      "height": 35,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBr",
+      "roundness": null,
+      "seed": 1153066776,
+      "version": 78,
+      "versionNonce": 1044324456,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292122783,
+      "link": null,
+      "locked": false,
+      "text": "main.c flow",
+      "fontSize": 28,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "main.c flow",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "-vXZEeN6ZRmkqAhvIknj8",
+      "type": "text",
+      "x": -90.69651777027963,
+      "y": 4404.9510458974355,
+      "width": 473,
+      "height": 500,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBs",
+      "roundness": null,
+      "seed": 540512536,
+      "version": 852,
+      "versionNonce": 1412467560,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "g0bCGPJFTqKQ2vvLoI2GD",
+          "type": "arrow"
+        },
+        {
+          "id": "6-wTh59ngakqJAjuiOirH",
+          "type": "arrow"
+        },
+        {
+          "id": "CSuPB-hcaSLvN4snZQt3W",
+          "type": "arrow"
+        },
+        {
+          "id": "rlNKdcp57eu-vc01B6zDe",
+          "type": "arrow"
+        },
+        {
+          "id": "s-RsDw_hpuUR3XD4L4s1o",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1785292745656,
+      "link": null,
+      "locked": false,
+      "text": "generate deck\nask player card 1\nremove card from deck\nask player card 2\nremove card from deck\nask dealer upcard\nremove card from deck\nif dealer peeks and card is A or T\n    ask if blackjack\n    if it is\n        remove that card\n        continue\nrun ev\ngive user best move\nask user for move\nif stand\nelif hit, ask for card and remove\nelif double, ask for card and remove\nelif surrender\nelif split, call this for both 1 card hands",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "generate deck\nask player card 1\nremove card from deck\nask player card 2\nremove card from deck\nask dealer upcard\nremove card from deck\nif dealer peeks and card is A or T\n    ask if blackjack\n    if it is\n        remove that card\n        continue\nrun ev\ngive user best move\nask user for move\nif stand\nelif hit, ask for card and remove\nelif double, ask for card and remove\nelif surrender\nelif split, call this for both 1 card hands",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "ZAWlNr6tVUyFvSN8cM_8T",
+      "type": "text",
+      "x": 472.9398458660837,
+      "y": 4769.496500442884,
+      "width": 286,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBt",
+      "roundness": null,
+      "seed": 310965096,
+      "version": 78,
+      "versionNonce": 186369384,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "g0bCGPJFTqKQ2vvLoI2GD",
+          "type": "arrow"
+        },
+        {
+          "id": "6-wTh59ngakqJAjuiOirH",
+          "type": "arrow"
+        },
+        {
+          "id": "rlNKdcp57eu-vc01B6zDe",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1785292719616,
+      "link": null,
+      "locked": false,
+      "text": "Ask for dealer cards until\nshould_dealer_hit == 0",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Ask for dealer cards until\nshould_dealer_hit == 0",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "g0bCGPJFTqKQ2vvLoI2GD",
+      "type": "arrow",
+      "x": 71.57620950244737,
+      "y": 4866.314682261066,
+      "width": 395.36363636363643,
+      "height": 52.053613053613844,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBu",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 291297128,
+      "version": 292,
+      "versionNonce": 534437480,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292745656,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          293.18181818181813,
+          -2.2727272727270247
+        ],
+        [
+          395.36363636363643,
+          -52.053613053613844
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.34307130501633615,
+          0.9227272727272612
+        ]
+      },
+      "endBinding": {
+        "elementId": "ZAWlNr6tVUyFvSN8cM_8T",
+        "mode": "orbit",
+        "fixedPoint": [
+          0.22099379493744528,
+          0.2209937949374398
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "moveMidPointsWithElement": false
+    },
+    {
+      "id": "6-wTh59ngakqJAjuiOirH",
+      "type": "arrow",
+      "x": 5.212573138811024,
+      "y": 4790.86013680652,
+      "width": 461.7272727272727,
+      "height": 3.594652266101548,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBv",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1818244968,
+      "version": 235,
+      "versionNonce": 1220727144,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292745657,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          461.7272727272727,
+          3.594652266101548
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.2027676340572741,
+          0.7718181818181693
+        ]
+      },
+      "endBinding": {
+        "elementId": "ZAWlNr6tVUyFvSN8cM_8T",
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5001
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "moveMidPointsWithElement": false
+    },
+    {
+      "id": "YPzdpe6dhIKpMHBYgEHMT",
+      "type": "arrow",
+      "x": 277.0307549569923,
+      "y": 4818.587409533794,
+      "width": 43.181818181818244,
+      "height": 53.63636363636306,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBw",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1385930264,
+      "version": 289,
+      "versionNonce": 475667560,
+      "isDeleted": true,
+      "boundElements": null,
+      "updated": 1785292694146,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          20.909090909090935,
+          -3.1818181818180165
+        ],
+        [
+          34.545454545454504,
+          -53.63636363636306
+        ],
+        [
+          43.181818181818244,
+          -30
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.7774360945608286,
+          0.8272727272727171
+        ]
+      },
+      "endBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.8687295790889856,
+          0.767272727272717
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "CSuPB-hcaSLvN4snZQt3W",
+      "type": "arrow",
+      "x": 279.30348222971963,
+      "y": 4818.587409533794,
+      "width": 324.09090909090907,
+      "height": 105,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBx",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 594721560,
+      "version": 845,
+      "versionNonce": 372532328,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292745657,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          28.181818181818187,
+          -10.454545454545041
+        ],
+        [
+          34.090909090909065,
+          -70
+        ],
+        [
+          1.3636363636363171,
+          -99.09090909090901
+        ],
+        [
+          -145.45454545454544,
+          -105
+        ],
+        [
+          -290,
+          -100.45454545454504
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.7822410147991528,
+          0.8272727272727171
+        ]
+      },
+      "endBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.1691331923890048,
+          0.6263636363636269
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "moveMidPointsWithElement": true
+    },
+    {
+      "id": "rlNKdcp57eu-vc01B6zDe",
+      "type": "arrow",
+      "x": 309.3034822297196,
+      "y": 4841.314682261067,
+      "width": 157.6363636363642,
+      "height": 35.082276773671765,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBy",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 502623848,
+      "version": 211,
+      "versionNonce": 100374376,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292745657,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          157.6363636363642,
+          -35.082276773671765
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.8456659619450301,
+          0.872727272727263
+        ]
+      },
+      "endBinding": {
+        "elementId": "ZAWlNr6tVUyFvSN8cM_8T",
+        "mode": "orbit",
+        "fixedPoint": [
+          0.3114882506527555,
+          0.3114882506527465
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "moveMidPointsWithElement": false
+    },
+    {
+      "id": "s-RsDw_hpuUR3XD4L4s1o",
+      "type": "arrow",
+      "x": 391.12166404790173,
+      "y": 4889.041954988343,
+      "width": 200.90909090909088,
+      "height": 176.36363636363694,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bBz",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 637542504,
+      "version": 741,
+      "versionNonce": 2086955624,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1785292745657,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          27.27272727272731,
+          -18.181818181818926
+        ],
+        [
+          29.54545454545456,
+          -117.27272727272793
+        ],
+        [
+          -37.72727272727269,
+          -156.36363636363694
+        ],
+        [
+          -171.36363636363632,
+          -176.36363636363694
+        ]
+      ],
+      "startBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          1.0186430905246964,
+          0.9681818181818144
+        ]
+      },
+      "endBinding": {
+        "elementId": "-vXZEeN6ZRmkqAhvIknj8",
+        "mode": "inside",
+        "fixedPoint": [
+          0.6563521045550635,
+          0.6154545454545405
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": null,
+      "elbowed": false,
+      "moveMidPointsWithElement": true
+    },
+    {
+      "id": "JA_gO8Kkyr8y_h74v0IBn",
+      "type": "text",
+      "x": 365.6671185933561,
+      "y": 611.9965004428852,
+      "width": 11,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "bC0",
+      "roundness": null,
+      "seed": 1416801304,
+      "version": 3,
+      "versionNonce": 1831634792,
+      "isDeleted": true,
+      "boundElements": null,
+      "updated": 1785293131864,
+      "link": null,
+      "locked": false,
+      "text": "",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "",
       "autoResize": true,
       "lineHeight": 1.25
     }
