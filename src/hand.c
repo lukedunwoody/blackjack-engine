@@ -26,7 +26,7 @@ int is_soft(Hand hand) {
         value += hand.counts[card] * (card + 1);
     }
 
-    if (value >= 11) {
+    if (value <= 11) {
         return 1;
     }
 
