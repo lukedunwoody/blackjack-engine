@@ -114,11 +114,20 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
     int dealer_peeks) {
 
-    // Takes 2 card player_hand
-    // Dealer is not bj atp
+    // Takes 2 card player_hand and 1 or 2 card dealer_hand
+    // Dealer we need to check if dealer is bj
     // can_split should already be disabled if hand is a pair
 
-    if (is_blackjack(player_hand)) {
+    int is_player_bj = is_blackjack(player_hand);
+
+    if (is_blackjack(dealer_hand) && dealer_peeks) {
+        MoveEV dbj_move;
+        dbj_move.ev = is_player_bj ? DRAW : LOSE;
+        dbj_move.move = -1;
+        return dbj_move;
+    }
+
+    if (is_blackjack(player_hand) && dealer_peeks) {
         MoveEV bj_move;
         bj_move.ev = bj_payout;
         bj_move.move = -1;
@@ -143,14 +152,14 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     move_evs[STAND] = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17);
     free_cache_table(dealer_cache_table_ptr);
 
-    move_evs[HIT] = ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17);
+    move_evs[HIT] = can_play ? ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17) : -1;
 
-    can_double = can_double && !double_restrictions[get_hand_value(player_hand)];
+    can_double = can_play && can_double && !double_restrictions[get_hand_value(player_hand)];
     move_evs[DOUBLE] = can_double ? ev_double(player_hand, dealer_hand, deck, s17) : -1;
 
-    move_evs[SURRENDER] = sur_allowed ? ev_surrender() : -1;
+    move_evs[SURRENDER] = can_play && sur_allowed ? ev_surrender() : -1;
 
-    move_evs[SPLIT] = can_split ? ev_split(player_hand, dealer_hand, deck,
+    move_evs[SPLIT] = can_play && can_split ? ev_split(player_hand, dealer_hand, deck,
         bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks) : -1;
 
     MoveEV best_move_ev = {-1};
@@ -196,44 +205,6 @@ MoveEV hitted_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand
     return best_move_ev;
 }
 
-double one_card_ev(Hand player_hand, Hand dealer_hand, Deck deck,
-    float bj_payout,
-    int sur_allowed,
-    int s17,
-    int das,
-    int rsa,
-    int psa,
-    int remaining_splits,
-    int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
-
-    // Hand is always 1 card here
-    // This is intended to be the entry point of pre_deal_ev calc
-    PlayerCacheTable *player_cache_table_ptr = make_player_cache_table();
-
-    double results[CARD_COUNT];
-
-    for (Card card = ACE; card < CARD_COUNT; card++) {
-        if (deck.counts[card] == 0) {
-            results[card] = 0;
-            continue;
-        }
-
-        Hand new_hand = append_card(player_hand, card);
-        Deck new_deck = remove_card(deck, card);
-
-        int can_split = is_pair(new_hand);
-        results[card] = start_hand_ev(player_cache_table_ptr, new_hand, dealer_hand, new_deck,
-            1, 1, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks).ev;
-    }
-
-    free_cache_table(player_cache_table_ptr);
-
-    double average_ev = get_average_ev(results, deck);
-    return average_ev;
-}
-
 double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
     float bj_payout,
     int sur_allowed,
@@ -270,9 +241,10 @@ double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
         Hand new_hand = append_card(split_hand, card);
         Deck new_deck = remove_card(deck, card);
 
-        int can_play = psa && split_card == ACE && is_pair(new_hand);
-        int can_double = das;
-        int can_split = (rsa && split_card == ACE) && is_pair(new_hand) && remaining_splits > 0;
+        int can_play = split_card != ACE || psa;
+        int can_double = can_play && das;
+        int can_split = is_pair(new_hand) && remaining_splits > 0 &&
+            (split_card != ACE || rsa);
 
         results[card] = start_hand_ev(player_cache_table_ptr, new_hand, dealer_hand, new_deck,
             can_play, can_double, can_split,
@@ -298,35 +270,66 @@ double pre_deal_ev(Deck deck,
 
     double results0[CARD_COUNT];
 
-    for (Card player_card = ACE; player_card < CARD_COUNT; player_card++) {
-        if (deck.counts[player_card] == 0) {
-            results0[player_card] = 0;
+    for (Card player_card0 = ACE; player_card0 < CARD_COUNT; player_card0++) {
+        if (deck.counts[player_card0] == 0) {
+            results0[player_card0] = 0;
             continue;
         }
 
-        Hand player_hand = {0};
-        player_hand = append_card(player_hand, player_card);
-
-        Deck new_deck0 = remove_card(deck, player_card);
-
+        Deck new_deck0 = remove_card(deck, player_card0);
         double results1[CARD_COUNT];
 
-        for (Card dealer_card = ACE; dealer_card < CARD_COUNT; dealer_card++) {
-            if (new_deck0.counts[dealer_card] == 0) {
-                results1[dealer_card] = 0;
+        for (Card player_card1 = ACE; player_card1 < CARD_COUNT; player_card1++) {
+            if (new_deck0.counts[player_card1] == 0) {
+                results1[player_card1] = 0;
                 continue;
             }
 
-            Hand dealer_hand = {0};
-            dealer_hand = append_card(dealer_hand, dealer_card);
+            Deck new_deck1 = remove_card(new_deck0, player_card1);
+            double results2[CARD_COUNT];
 
-            Deck new_deck1 = remove_card(new_deck0, dealer_card);
+            for (Card dealer_card0 = ACE; dealer_card0 < CARD_COUNT; dealer_card0++) {
+                if (new_deck1.counts[dealer_card0] == 0) {
+                    results2[dealer_card0] = 0;
+                    continue;
+                }
 
-            results1[dealer_card] = one_card_ev(player_hand, dealer_hand, new_deck1,
-                bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks);
+                Deck new_deck2 = remove_card(new_deck1, dealer_card0);
+                double results3[CARD_COUNT];
+
+                for (Card dealer_card1 = ACE; dealer_card1 < CARD_COUNT; dealer_card1++) {
+                    if (new_deck2.counts[dealer_card1] == 0) {
+                        results3[dealer_card1] = 0;
+                        continue;
+                    }
+
+                    Deck new_deck3 = remove_card(new_deck2, dealer_card1);
+
+                    Hand player_hand = {0};
+                    player_hand = append_card(player_hand, player_card0);
+                    player_hand = append_card(player_hand, player_card1);
+
+                    Hand dealer_hand = {0};
+                    dealer_hand = append_card(dealer_hand, dealer_card0);
+                    dealer_hand = append_card(dealer_hand, dealer_card1);
+
+                    PlayerCacheTable *player_cache_table_ptr = make_player_cache_table();
+                    int can_split = is_pair(player_hand) && remaining_splits > 0;
+
+                    results3[dealer_card1] = start_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, new_deck3,
+                        1, 1, can_split,
+                        bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits,
+                        double_restrictions, dealer_peeks).ev;
+                    free_cache_table(player_cache_table_ptr);
+                }
+
+                results2[dealer_card0] = get_average_ev(results3, new_deck2);
+            }
+
+            results1[player_card1] = get_average_ev(results2, new_deck1);
         }
 
-        results0[player_card] = get_average_ev(results1, new_deck0);
+        results0[player_card0] = get_average_ev(results1, new_deck0);
     }
 
     return get_average_ev(results0, deck);

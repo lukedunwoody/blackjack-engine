@@ -26,17 +26,6 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
     int dealer_peeks);
 
-double one_card_ev(Hand player_hand, Hand dealer_hand, Deck deck,
-    float bj_payout,
-    int sur_allowed,
-    int s17,
-    int das,
-    int rsa,
-    int psa,
-    int remaining_splits,
-    int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks);
-
 double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
     float bj_payout,
     int sur_allowed,
