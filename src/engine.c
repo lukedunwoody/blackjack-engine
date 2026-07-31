@@ -9,7 +9,8 @@
 #include "ev.h"
 #include "hand.h"
 
-double ev_hit(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
+double ev_hit(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck,
+    int s17, int dealer_no_bj_confirmed) {
     // assumes player_hand has at least 2 cards
 
     double results[CARD_COUNT];
@@ -41,11 +42,11 @@ double ev_hit(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand d
         DealerCacheTable *dealer_cache_table_ptr = make_dealer_cache_table();
 
         // EV logic
-        double stand_ev = dealer_ev(dealer_cache_table_ptr, new_hand, dealer_hand, new_deck, s17);
+        double stand_ev = dealer_ev(dealer_cache_table_ptr, new_hand, dealer_hand, new_deck, s17, dealer_no_bj_confirmed);
         free_cache_table(dealer_cache_table_ptr);
 
         double hit_ev = get_hand_value(new_hand) < 21 ?
-            ev_hit(player_cache_table_ptr, new_hand, dealer_hand, new_deck, s17) : -1;
+            ev_hit(player_cache_table_ptr, new_hand, dealer_hand, new_deck, s17, dealer_no_bj_confirmed) : -1;
 
         MoveEV best_move_ev;
         if (stand_ev > hit_ev) {
@@ -64,7 +65,8 @@ double ev_hit(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand d
     return average_ev;
 }
 
-double ev_double(Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
+double ev_double(Hand player_hand, Hand dealer_hand, Deck deck,
+    int s17, int dealer_no_bj_confirmed) {
     // assumes player_hand is 2 cards
 
     double results[CARD_COUNT];
@@ -89,7 +91,7 @@ double ev_double(Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
         DealerCacheTable *dealer_cache_table_ptr = make_dealer_cache_table();
 
         // EV logic
-        results[card] = dealer_ev(dealer_cache_table_ptr, new_hand, dealer_hand, new_deck, s17);
+        results[card] = dealer_ev(dealer_cache_table_ptr, new_hand, dealer_hand, new_deck, s17, dealer_no_bj_confirmed);
         free_cache_table(dealer_cache_table_ptr);
     }
 
@@ -112,7 +114,8 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     int psa,
     int remaining_splits,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
+    int dealer_peeks,
+    int dealer_no_bj_confirmed) {
 
     // Takes 2 card player_hand and 1 or 2 card dealer_hand
     // Dealer we need to check if dealer is bj
@@ -149,18 +152,18 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     double move_evs[MOVE_COUNT];
 
     DealerCacheTable *dealer_cache_table_ptr = make_dealer_cache_table();
-    move_evs[STAND] = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17);
+    move_evs[STAND] = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed);
     free_cache_table(dealer_cache_table_ptr);
 
-    move_evs[HIT] = can_play ? ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17) : -1;
+    move_evs[HIT] = can_play ? ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed) : -1;
 
     can_double = can_play && can_double && double_restrictions[get_hand_value(player_hand)];
-    move_evs[DOUBLE] = can_double ? ev_double(player_hand, dealer_hand, deck, s17) : -1;
+    move_evs[DOUBLE] = can_double ? ev_double(player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed) : -1;
 
     move_evs[SURRENDER] = can_play && sur_allowed ? ev_surrender() : -1;
 
     move_evs[SPLIT] = can_play && can_split ? ev_split(player_hand, dealer_hand, deck,
-        bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks) : -1;
+        bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed) : -1;
 
     MoveEV best_move_ev = {-1};
     for (int move = 0; move < MOVE_COUNT; move++) {
@@ -174,7 +177,8 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
     return best_move_ev;
 }
 
-MoveEV hitted_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
+MoveEV hitted_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck,
+    int s17, int dealer_no_bj_confirmed) {
     // 3 or more card hand
     // not already busted
 
@@ -187,10 +191,10 @@ MoveEV hitted_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand
     DealerCacheTable *dealer_cache_table_ptr = make_dealer_cache_table();
 
     // EV logic
-    double stand_ev = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17);
+    double stand_ev = dealer_ev(dealer_cache_table_ptr, player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed);
     free_cache_table(dealer_cache_table_ptr);
 
-    double hit_ev = ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17);
+    double hit_ev = ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed);
 
     MoveEV best_move_ev;
     if (stand_ev > hit_ev) {
@@ -214,12 +218,11 @@ double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
     int psa,
     int remaining_splits,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
+    int dealer_peeks,
+    int dealer_no_bj_confirmed) {
 
     // assumes 2 card pair
     remaining_splits--;
-
-    PlayerCacheTable *player_cache_table_ptr = make_player_cache_table();
 
     Card split_card;
     for (Card card = ACE; card < CARD_COUNT; card++) {
@@ -246,12 +249,14 @@ double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
         int can_split = is_pair(new_hand) && remaining_splits > 0 &&
             (split_card != ACE || rsa);
 
+        PlayerCacheTable *player_cache_table_ptr = make_player_cache_table();
+
         results[card] = start_hand_ev(player_cache_table_ptr, new_hand, dealer_hand, new_deck,
             can_play, can_double, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks).ev;
-    }
+            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed).ev;
 
-    free_cache_table(player_cache_table_ptr);
+        free_cache_table(player_cache_table_ptr);
+    }
 
     double average_ev = get_average_ev(results, deck);
     return average_ev*2;
@@ -266,7 +271,8 @@ double pre_deal_ev(Deck deck,
     int psa,
     int remaining_splits,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
+    int dealer_peeks,
+    int dealer_no_bj_confirmed) {
 
     double results0[CARD_COUNT];
 
@@ -319,7 +325,7 @@ double pre_deal_ev(Deck deck,
                     results3[dealer_card1] = start_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, new_deck3,
                         1, 1, can_split,
                         bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits,
-                        double_restrictions, dealer_peeks).ev;
+                        double_restrictions, dealer_peeks, dealer_no_bj_confirmed).ev;
                     free_cache_table(player_cache_table_ptr);
                 }
 
@@ -345,7 +351,8 @@ MoveEV any_hand_ev(Hand player_hand, Hand dealer_hand, Deck deck,
     int psa,
     int remaining_splits,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
+    int dealer_peeks,
+    int dealer_no_bj_confirmed) {
 
     // Comment to fix intends
     MoveEV best_move_ev;
@@ -354,9 +361,9 @@ MoveEV any_hand_ev(Hand player_hand, Hand dealer_hand, Deck deck,
 
     if (player_hand.size == 2) {
         best_move_ev = start_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, deck, can_play, can_double, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks);
+            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
     } else {
-        best_move_ev = hitted_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, deck, s17);
+        best_move_ev = hitted_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, deck, s17, dealer_no_bj_confirmed);
     }
 
     free_cache_table(player_cache_table_ptr);

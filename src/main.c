@@ -52,7 +52,8 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
     int psa,
     int remaining_splits,
     int double_restrictions[DOUBLE_RESTRICTION_COUNT],
-    int dealer_peeks) {
+    int dealer_peeks,
+    int dealer_no_bj_confirmed) {
 
     if (is_bust(player_hand)) {
         printf("Your hand busted. Moving on...\n");
@@ -76,7 +77,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
 
     MoveEV best_move_ev = any_hand_ev(player_hand, dealer_hand, deck,
         can_play, can_double, can_split,
-        bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks);
+        bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
     print_best_move_ev(best_move_ev);
 
@@ -94,7 +95,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
 
         deck = simulate_hand(player_hand, dealer_hand, deck,
             can_play, can_double, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks);
+            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
     } else if (user_move == DOUBLE) {
         printf("Please enter the card you just recieved: ");
@@ -125,7 +126,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
 
         deck = simulate_hand(hand0, dealer_hand, deck,
             psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && remaining_splits > 0,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks);
+            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
         printf("Please enter the card you just recieved: ");
         Card card1 = get_card_input();
@@ -135,7 +136,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
 
         deck = simulate_hand(hand1, dealer_hand, deck,
             psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && remaining_splits > 0,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks);
+            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
     }
 
     return deck;
@@ -228,8 +229,9 @@ int main(int argc, char *argv[]) {
 
         deck = get_and_remove_other_player_cards(deck);
 
+        int dealer_no_bj_confirmed = 0;
         if (dealer_peeks && (dealer_upcard == ACE || dealer_upcard == TEN)) {
-            printf("Does the dealer have a blackjack: ");
+            printf("Does the dealer have a blackjack (y/N): ");
             char answer;
             scanf(" %c", &answer);
 
@@ -239,8 +241,9 @@ int main(int argc, char *argv[]) {
                 } else {
                     deck = remove_card(deck, ACE);
                 }
-                continue;
             }
+
+            dealer_no_bj_confirmed = 1;
         }
 
         int can_double = double_restrictions[get_hand_value(player_hand)];
@@ -248,7 +251,7 @@ int main(int argc, char *argv[]) {
 
         deck = simulate_hand(player_hand, dealer_hand, deck,
             1, can_double, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, max_splits, double_restrictions, dealer_peeks);
+            bj_payout, sur_allowed, s17, das, rsa, psa, max_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
         printf("Press 'r' if the dealer is shuffling. Press 'q' to quit. Otherwise hit any key to continue: ");
         char input_char = getchar();
@@ -258,7 +261,5 @@ int main(int argc, char *argv[]) {
         } else if (input_char == 'q' || input_char == 'Q') {
             break;
         }
-
-        continue;
     }
 }

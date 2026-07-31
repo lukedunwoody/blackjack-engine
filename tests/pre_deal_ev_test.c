@@ -10,7 +10,7 @@ int main() {
     int double_restrictions[DOUBLE_RESTRICTION_COUNT] = {0};
 
     // Fairly standard American casino rules
-    double pdev = pre_deal_ev(deck, 1.5, 0, 1, 1, 0, 0, 4, double_restrictions, 1);
+    double pdev = pre_deal_ev(deck, 1.5, 0, 1, 1, 0, 0, 4, double_restrictions, 1, 0);
 
     printf("Pre deal ev: %f", pdev);
 }

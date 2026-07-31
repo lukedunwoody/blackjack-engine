@@ -27,7 +27,7 @@ int main() {
     // Fairly standard American casino rules
     MoveEV shev = start_hand_ev(player_cache_table_ptr, player_hand, dealer_hand, deck,
         1, 1, is_pair(player_hand),
-        1.5, 1, 1, 1, 0, 0, 4, double_restrictions, 1);
+        1.5, 1, 1, 1, 0, 0, 4, double_restrictions, 1, 0);
 
     printf("Move key: STAND: %i, HIT %i, DOUBLE %i, SURRENDER %i, SPLIT %i\n", STAND, HIT, DOUBLE, SURRENDER, SPLIT);
     printf("Best move: %i, EV: %f\n", shev.move, shev.ev);

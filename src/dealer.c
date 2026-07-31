@@ -13,7 +13,8 @@ int should_dealer_hit(Hand dealer_hand, int s17) {
     return (value < 17) || (value == 17 && soft && s17);
 }
 
-double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck, int s17) {
+double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck,
+    int s17, int dealer_no_bj_confirmed) {
     // assumes player_hand is not a bust and dealer_hand is either 1 or 2 cards
 
     if (is_blackjack(dealer_hand)) {
@@ -29,6 +30,8 @@ double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Han
     double results[CARD_COUNT];
 
     if (should_dealer_hit(dealer_hand, s17)) {
+        Deck weigh_deck = deck;
+
         for (Card card = ACE; card < CARD_COUNT; card++) {
             if (deck.counts[card] == 0) {
                 results[card] = 0;
@@ -38,6 +41,14 @@ double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Han
             // Append card
             Hand new_hand = append_card(dealer_hand, card);
             Deck new_deck = remove_card(deck, card);
+
+            // Elim known blackjacks
+            if (dealer_no_bj_confirmed && is_blackjack(new_hand)) {
+                weigh_deck.size -= weigh_deck.counts[card];
+                weigh_deck.counts[card] = 0;
+                results[card] = 0;
+                continue;
+            }
 
             // Get rid of busts right away
             if (is_bust(new_hand)) {
@@ -52,10 +63,10 @@ double dealer_ev(DealerCacheTable *dealer_cache_table_ptr, Hand player_hand, Han
                 continue;
             }
 
-            results[card] = dealer_ev(dealer_cache_table_ptr, player_hand, new_hand, new_deck, s17);
+            results[card] = dealer_ev(dealer_cache_table_ptr, player_hand, new_hand, new_deck, s17, dealer_no_bj_confirmed);
         }
 
-        double average_ev = get_average_ev(results, deck);
+        double average_ev = get_average_ev(results, weigh_deck);
         add_dealer_cache(dealer_cache_table_ptr, dealer_hand, average_ev);
         return average_ev;
 
