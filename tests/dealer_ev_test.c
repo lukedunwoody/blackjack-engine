@@ -4,7 +4,7 @@
 #include "card.h"
 #include "dealer.h"
 #include "hand.h"
-#include "input.h"
+#include "io.h"
 
 int main() {
     printf("Enter player hand 0, 1, dealer upcard\n");
