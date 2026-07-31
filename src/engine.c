@@ -154,7 +154,7 @@ MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand,
 
     move_evs[HIT] = can_play ? ev_hit(player_cache_table_ptr, player_hand, dealer_hand, deck, s17) : -1;
 
-    can_double = can_play && can_double && !double_restrictions[get_hand_value(player_hand)];
+    can_double = can_play && can_double && double_restrictions[get_hand_value(player_hand)];
     move_evs[DOUBLE] = can_double ? ev_double(player_hand, dealer_hand, deck, s17) : -1;
 
     move_evs[SURRENDER] = can_play && sur_allowed ? ev_surrender() : -1;
