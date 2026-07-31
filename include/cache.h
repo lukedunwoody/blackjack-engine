@@ -1,6 +1,8 @@
 #ifndef CACHE_H
 #define CACHE_H
 
+#include <stddef.h>
+
 #include "hand.h"
 
 #define DEALER_CACHE_SIZE 2375
