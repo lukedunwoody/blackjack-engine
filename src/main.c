@@ -149,6 +149,7 @@ int main(int argc, char *argv[]) {
     int num_decks = 8;
     float bj_payout = 1.5;
     int sur_allowed = 0;
+    int insurance_offered = 0;
     int s17 = 0;
     int das = 1;
     int rsa = 0;
@@ -171,6 +172,9 @@ int main(int argc, char *argv[]) {
         }
         else if (strcmp(argv[i], "-s") == 0 && i + 1 < argc) {
             sur_allowed = atoi(argv[++i]);
+        }
+        else if (strcmp(argv[i], "-i") == 0 && i + 1 < argc) {
+            insurance_offered = atoi(argv[++i]);
         }
         else if (strcmp(argv[i], "-s17") == 0 && i + 1 < argc) {
             s17 = atoi(argv[++i]);
@@ -229,9 +233,30 @@ int main(int argc, char *argv[]) {
 
         deck = get_and_remove_other_player_cards(deck);
 
+        if (insurance_offered && (dealer_upcard == ACE)) {
+            double insurance_ev = ev_insurance(deck);
+
+            printf("You have been offered insurance. EV: %f. ", insurance_ev);
+
+            if (insurance_ev > 0) {
+                printf("You should take it.\n");
+            } else {
+                printf("You shouldn't take it.\n");
+            }
+
+            printf("Did you take insurance (y/n): ");
+
+            char answer;
+            scanf(" %c", &answer);
+
+            if (answer == 'y' || answer == 'Y') {
+                continue;
+            }
+        }
+
         int dealer_no_bj_confirmed = 0;
         if (dealer_peeks && (dealer_upcard == ACE || dealer_upcard == TEN)) {
-            printf("Does the dealer have a blackjack (y/N): ");
+            printf("Does the dealer have a blackjack (y/n): ");
             char answer;
             scanf(" %c", &answer);
 

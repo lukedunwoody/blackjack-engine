@@ -29,6 +29,7 @@ Follow this table to match your exact rules to the launch flags:
 |Number of decks    |-d  |8      |int  |
 |Blackjack payout   |-p  |1.5    |float|
 |Surrender allowed  |-s  |0      |0-1  |
+|Insurance offered  |-i  |0      |0-1  |
 |Dealer hits soft 17|-s17|0      |0-1  |
 |Double after split |-das|1      |0-1  |
 |Resplit split aces |-rsa|0      |0-1  |
@@ -66,12 +67,6 @@ This gives the player a massive advantage because hit or stand decisions are dec
 Iterating through the hole card during the dealer simulation would require losing the ability to detect early blackjacks, also making this version inaccurate.
 
 The only fix would be a more complex hidden card system, but this is not a priority because pre_deal_ev is not needed for the main program.
-
-### No insurance
-
-Unfortunately, during the design and implementation of the engine, I completely forgot about the insurance move.
-
-This is something I intend on adding and plan to get to in the next update.
 
 ## Test Scripts
 

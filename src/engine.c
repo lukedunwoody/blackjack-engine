@@ -104,6 +104,13 @@ double ev_surrender() {
     return -0.5;
 }
 
+double ev_insurance(Deck deck) {
+    float tens = deck.counts[TEN];
+    float other = deck.size - deck.counts[TEN];
+
+    return (tens * WIN + other * LOSE) / deck.size;
+}
+
 MoveEV start_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck,
     int can_play, int can_double, int can_split,
     float bj_payout,

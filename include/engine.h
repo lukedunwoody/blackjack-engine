@@ -16,6 +16,8 @@ double ev_double(Hand player_hand, Hand dealer_hand, Deck deck,
 
 double ev_surrender();
 
+double ev_insurance(Deck deck);
+
 MoveEV hitted_hand_ev(PlayerCacheTable *player_cache_table_ptr, Hand player_hand, Hand dealer_hand, Deck deck,
     int s17, int dealer_no_bj_confirmed);
 
