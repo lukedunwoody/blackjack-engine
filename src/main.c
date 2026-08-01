@@ -43,7 +43,7 @@ Deck get_and_remove_other_player_cards(Deck deck) {
 }
 
 Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
-    int can_play, int can_double, int can_split,
+    int can_play, int can_double, int can_split, int get_dealer_cards,
     float bj_payout,
     int sur_allowed,
     int s17,
@@ -84,7 +84,9 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
     int user_move = get_user_move(can_double, can_split, sur_allowed);
 
     if (user_move == STAND || user_move == SURRENDER) {
-        deck = get_and_remove_dealer_cards(dealer_hand, deck, s17);
+        if (get_dealer_cards) {
+            deck = get_and_remove_dealer_cards(dealer_hand, deck, s17);
+        }
 
     } else if (user_move == HIT) {
         printf("Please enter the card you just recieved: ");
@@ -94,7 +96,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         player_hand = append_card(player_hand, card);
 
         deck = simulate_hand(player_hand, dealer_hand, deck,
-            can_play, can_double, can_split,
+            can_play, can_double, can_split, 1,
             bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
     } else if (user_move == DOUBLE) {
@@ -104,7 +106,9 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         deck = remove_card(deck, card);
         player_hand = append_card(player_hand, card);
 
-        deck = get_and_remove_dealer_cards(dealer_hand, deck, s17);
+        if (get_dealer_cards) {
+            deck = get_and_remove_dealer_cards(dealer_hand, deck, s17);
+        }
 
     } else {
         // Can safely assume this is a pair
@@ -125,7 +129,10 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         Hand hand0 = append_card(player_hand, card0);
 
         deck = simulate_hand(hand0, dealer_hand, deck,
-            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && is_pair(hand0) && remaining_splits > 0,
+            psa || split_card != ACE,
+            das && double_restrictions[get_hand_value(hand0)],
+            (rsa || split_card != ACE) && is_pair(hand0) && remaining_splits > 0,
+            0,
             bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
         printf("Please enter the card you just recieved: ");
@@ -135,8 +142,15 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         Hand hand1 = append_card(player_hand, card1);
 
         deck = simulate_hand(hand1, dealer_hand, deck,
-            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && is_pair(hand1) && remaining_splits > 0,
+            psa || split_card != ACE,
+            das && double_restrictions[get_hand_value(hand1)],
+            (rsa || split_card != ACE) && is_pair(hand1) && remaining_splits > 0,
+            0,
             bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
+
+        if (get_dealer_cards) {
+            deck = get_and_remove_dealer_cards(dealer_hand, deck, s17);
+        }
     }
 
     return deck;
@@ -275,8 +289,14 @@ int main(int argc, char *argv[]) {
         int can_split = is_pair(player_hand) && max_splits > 0;
 
         deck = simulate_hand(player_hand, dealer_hand, deck,
-            1, can_double, can_split,
+            1, can_double, can_split, 1,
             bj_payout, sur_allowed, s17, das, rsa, psa, max_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
+
+        deck = get_and_remove_other_player_cards(deck);
+
+        // Flush leftover input from previous scanf
+        int ch;
+        while ((ch = getchar()) != '\n' && ch != EOF);
 
         printf("Press 'r' if the dealer is shuffling. Press 'q' to quit. Otherwise hit any key to continue: ");
         char input_char = getchar();
