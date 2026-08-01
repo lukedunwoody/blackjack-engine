@@ -12,13 +12,17 @@ A C program that calculates and weighs all possible Blackjack outcomes in real t
 
 To clone the repo, run this command inside the desired folder:
 
-```git clone https://github.com/lukedunwoody/blackjack-engine.git```
+```bash
+git clone https://github.com/lukedunwoody/blackjack-engine.git
+```
 
 Inside the project folder, use the C compiler of your choice.
 
 Here's a simple compile command using clang:
 
-```clang -Iinclude src/*.c```
+```bash
+clang -Iinclude src/*.c
+```
 
 ### Step 2: Launch Flags
 
