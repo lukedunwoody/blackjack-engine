@@ -125,7 +125,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         Hand hand0 = append_card(player_hand, card0);
 
         deck = simulate_hand(hand0, dealer_hand, deck,
-            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && remaining_splits > 0,
+            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && is_pair(hand0) && remaining_splits > 0,
             bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
 
         printf("Please enter the card you just recieved: ");
@@ -135,7 +135,7 @@ Deck simulate_hand(Hand player_hand, Hand dealer_hand, Deck deck,
         Hand hand1 = append_card(player_hand, card1);
 
         deck = simulate_hand(hand1, dealer_hand, deck,
-            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && remaining_splits > 0,
+            psa || split_card != ACE, das && double_restrictions[get_hand_value(hand0)], (rsa || split_card != ACE) && is_pair(hand1) && remaining_splits > 0,
             bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits - 1, double_restrictions, dealer_peeks, dealer_no_bj_confirmed);
     }
 

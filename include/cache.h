@@ -14,7 +14,6 @@ typedef enum {
     DOUBLE,
     SURRENDER,
     SPLIT,
-    INSURANCE,
     MOVE_COUNT
 } Moves;
 
