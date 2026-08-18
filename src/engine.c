@@ -259,7 +259,7 @@ double ev_split(Hand player_hand, Hand dealer_hand, Deck deck,
 
         results[card] = start_hand_ev(player_cache_table_ptr, new_hand, dealer_hand, new_deck,
             can_play, can_double, can_split,
-            bj_payout, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed).ev;
+            1, sur_allowed, s17, das, rsa, psa, remaining_splits, double_restrictions, dealer_peeks, dealer_no_bj_confirmed).ev;
 
         free_cache_table(player_cache_table_ptr);
     }
